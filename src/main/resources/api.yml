@@ -39,7 +39,7 @@ paths:
                   $ref: '#/components/examples/user'
         404:
           $ref: '#/components/responses/UserNotFound'
-  /api/v1/users/{userId}/medical-imaging:
+  /api/v1/users/{userId}/medical-images:
     get:
       tags:
         - Users
@@ -63,23 +63,59 @@ paths:
               examples:
                 medicalImageResponseExample:
                   $ref: '#/components/examples/medicalImagesResponseExample'
-    post:
+  /api/v1/medical-images/{imageId}:
+    get:
       tags:
-        - Users
-      summary: Create User medical images
-      operationId: createUserMedicalImages
+        - Medical Images
+      summary: Return medical specified image
+      operationId: getMedicalImage
       parameters:
         - in: path
-          name: userId
+          name: imageId
           required: true
           schema:
             type: integer
+      responses:
+        200:
+          description: Get medical image
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalImageResponse'
+              examples:
+                medicalImageResponseExample:
+                  $ref: '#/components/examples/medicalImageResponseExample'
+  /api/v1/medical-images:
+    get:
+      tags:
+        - Medical Images
+      summary: Return medical images
+      operationId: getMedicalImages
+      responses:
+        200:
+          description: List medical images
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MedicalImageResponse'
+              examples:
+                medicalImagesResponseExample:
+                  $ref: '#/components/examples/medicalImagesResponseExample'
+    post:
+      tags:
+        - Medical Images
+      summary: Create medical images
+      operationId: createMedicalImages
       requestBody:
         description: Medical images
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/MedicalImage'
+              type: array
+              items:
+                $ref: '#/components/schemas/MedicalImage'
       responses:
         201:
           description: List of specified user medical images
@@ -91,9 +127,7 @@ paths:
                   $ref: '#/components/schemas/MedicalImageResponse'
               examples:
                 medicalImageResponseExample:
-                  $ref: '#/components/examples/medicalImageResponseExample'
-        404:
-          $ref: '#/components/responses/UserNotFound'
+                  $ref: '#/components/examples/medicalImagesResponseExample'
 components:
   examples:
     user:
