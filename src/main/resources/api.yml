@@ -63,15 +63,47 @@ paths:
               examples:
                 medicalImageResponseExample:
                   $ref: '#/components/examples/medicalImagesResponseExample'
-  /api/v1/medical-images/{imageId}:
+    post:
+      tags:
+        - Users
+      summary: Create medical images
+      operationId: createMedicalImages
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Medical images
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MedicalImage'
+      responses:
+        201:
+          description: List of specified user medical images
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MedicalImageResponse'
+              examples:
+                medicalImageResponseExample:
+                  $ref: '#/components/examples/medicalImageResponseExample'
+  /api/v1/users/{userId}/medical-images/{imageId}:
     get:
       tags:
-        - Medical Images
-      summary: Return medical specified image
+        - Users
+      summary: Return user medical image
       operationId: getMedicalImage
       parameters:
         - in: path
           name: imageId
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: userId
           required: true
           schema:
             type: integer
@@ -103,31 +135,6 @@ paths:
               examples:
                 medicalImagesResponseExample:
                   $ref: '#/components/examples/medicalImagesResponseExample'
-    post:
-      tags:
-        - Medical Images
-      summary: Create medical images
-      operationId: createMedicalImages
-      requestBody:
-        description: Medical images
-        content:
-          multipart/form-data:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/MedicalImage'
-      responses:
-        201:
-          description: List of specified user medical images
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MedicalImageResponse'
-              examples:
-                medicalImageResponseExample:
-                  $ref: '#/components/examples/medicalImagesResponseExample'
 components:
   examples:
     user:
@@ -149,7 +156,9 @@ components:
           fileName: RTG_01.png,
           date: '2017-07-21T17:32:28Z',
           size: 404313,
-          fileExtension: .png
+          fileExtension: .png,
+          file: 32103123=,
+          diseaseProbability: 0.897979789
         }
     medicalImagesResponseExample:
       value:
@@ -159,21 +168,27 @@ components:
           fileName: RTG_01.png,
           date: '2017-07-21T17:32:28Z',
           size: 404313,
-          fileExtension: .png
+          fileExtension: .png,
+          file: 32103123=,
+          diseaseProbability: 0.43243242
         },
         {
           id: 4,
           fileName: MRI_01.jpg,
           date: '2018-07-21T17:32:28Z',
           size: 252448,
-          fileExtension: .jpg
+          fileExtension: .jpg,
+          file: 32103123=,
+          diseaseProbability: 0.96548949849
         },
         {
           id: 5,
           fileName: CT_01.dicom,
           date: '2019-07-21T17:32:28Z',
           size: 9938291,
-          fileExtension: .dicom
+          fileExtension: .dicom,
+          file: 32103123=,
+          diseaseProbability: 0.12156456456
         }
         ]
     userNotFoundExample:
@@ -211,6 +226,12 @@ components:
           type: string
         city:
           type: string
+        phone:
+          type: string
+        zipCode:
+          type: string
+        avatar:
+          type: string
     Error:
       type: object
       required:
@@ -238,6 +259,9 @@ components:
           items:
             type: string
             format: binary
+        description:
+          description: Image description
+          type: string
     MedicalImageResponse:
       type: object
       required:
@@ -263,6 +287,13 @@ components:
         fileExtension:
           description: file extension png,jpg,dicom
           type: string
+        file:
+          description: file in base64 format
+          type: string
+        diseaseProbability:
+          description: probabilty of disease on image
+          type: number
+          format: double
   responses:
     UserNotFound:
       description: User Not Found

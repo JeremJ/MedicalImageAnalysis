@@ -5,16 +5,19 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet author="jjaworski" id="1">
-        <createTable tableName="users">
+        <createTable tableName="user">
             <column name="id"
                     type="bigserial"
                     autoIncrement="true" startWith="1">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pk"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_pk"/>
             </column>
             <column name="username" type="varchar(100)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="position" type="varchar(100)">
+            <column name="role" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="avatar" type="bytea">
                 <constraints nullable="true"/>
             </column>
             <column name="first_name" type="varchar(50)">
@@ -38,7 +41,49 @@
             <column name="city" type="varchar(100)">
                 <constraints nullable="true"/>
             </column>
-            <column name="description" type="varchar(255)">
+        </createTable>
+        <createTable tableName="image">
+            <column name="id"
+                    type="bigserial"
+                    autoIncrement="true" startWith="1">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="image_pk"/>
+            </column>
+            <column name="file" type="bytea">
+                <constraints nullable="true"/>
+            </column>
+            <column name="file_name" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="date" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="size" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="file_extension" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="disease_probability" type="double precision">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="user_image">
+            <column name="id"
+                    type="bigserial"
+                    autoIncrement="true" startWith="1">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_image_pk"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_user_image"
+                             referencedColumnNames="id"
+                             referencedTableName="user"/>
+            </column>
+            <column name="image_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_image_user_image"
+                             referencedColumnNames="id"
+                             referencedTableName="image"/>
+            </column>
+            <column name="description" type="text">
                 <constraints nullable="true"/>
             </column>
         </createTable>
