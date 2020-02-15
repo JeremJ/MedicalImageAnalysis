@@ -9,9 +9,9 @@
         <relativePath/>
     </parent>
     <groupId>com.imageAnalysis</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>Medical Image Analysis</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
+    <name>Medical Image Analysis</name>
     <description>image analysis</description>
 
     <properties>
