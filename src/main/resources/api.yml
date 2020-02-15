@@ -35,8 +35,28 @@ paths:
                 items:
                   $ref: '#/components/schemas/User'
               examples:
-                skill:
+                user:
                   $ref: '#/components/examples/user'
+        404:
+          $ref: '#/components/responses/UserNotFound'
+  /api/v1/users:
+    get:
+      tags:
+        - Users
+      summary: Return Users
+      operationId: getUsers
+      responses:
+        200:
+          description: Basic Data users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BasicUser'
+              examples:
+                basicUsers:
+                  $ref: '#/components/examples/basicUsers'
         404:
           $ref: '#/components/responses/UserNotFound'
   /api/v1/users/{userId}/medical-images:
@@ -137,17 +157,42 @@ paths:
                   $ref: '#/components/examples/medicalImagesResponseExample'
 components:
   examples:
+    basicUsers:
+      summary: List of users
+      value:
+        [
+        {
+          id: 1,
+          username: jeremiasz.jaworski,
+          firstName: Jeremiasz,
+          lastName: Jaworski,
+          email: jeremiasz.jaworski@outlook.com,
+          avatar: dsadada!=
+        },
+        {
+          id: 2,
+          username: janusz.janek,
+          firstName: Janusz,
+          lastName: Janek,
+          email: janusz.janek@outlook.com,
+          avatar: etyerye325!=
+        }
+        ]
     user:
       summary: user
       value:
         {
+          id: 1,
           username: jeremiasz.jaworski,
           firstName: Jeremiasz,
           lastName: Jaworski,
           role: ADMIN,
           email: jeremiasz.jaworski@outlook.com,
           country: Poland,
-          city: Warszawa
+          city: Warszawa,
+          phone: 3143141,
+          zipCode: 08-500,
+          avatar: 214141!=
         }
     medicalImageResponseExample:
       value:
@@ -210,6 +255,9 @@ components:
         - firstName
         - lastName
       properties:
+        id:
+          type: integer
+          format: int64
         username:
           type: string
         firstName:
@@ -229,6 +277,27 @@ components:
         phone:
           type: string
         zipCode:
+          type: string
+        avatar:
+          type: string
+    BasicUser:
+      type: object
+      description: Basic user data
+      required:
+        - username
+        - firstName
+        - lastName
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
           type: string
         avatar:
           type: string
