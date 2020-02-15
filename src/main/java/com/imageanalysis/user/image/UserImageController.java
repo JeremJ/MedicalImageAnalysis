@@ -1,14 +1,13 @@
 package com.imageanalysis.user.image;
 
 import com.imageanalysis.image.ImageDTO;
-import com.imageanalysis.image.ImageExtendedDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -20,24 +19,26 @@ import static org.springframework.http.ResponseEntity.status;
 @RequestMapping("/api/v1/users")
 public class UserImageController {
 
+    private final UserImageService userImageService;
+
     @GetMapping("/{userId}/medical-images")
-    public ResponseEntity<List<ImageExtendedDTO>> getUserImages(@PathVariable Long userId) {
-        //TODO implementation
-        return ok(Collections.singletonList(new ImageExtendedDTO()));
+    public ResponseEntity<List<UserImageDTO>> getUserImages(@PathVariable Long userId, Pageable pageable) {
+        List<UserImageDTO> userImages = userImageService.getUserImages(userId, pageable);
+        return ok(userImages);
     }
 
     @PostMapping("/{userId}/medical-images")
-    public ResponseEntity<ImageExtendedDTO> createUserImage(@PathVariable Long userId,
-                                                            @Valid ImageDTO imageDTO,
-                                                            @RequestPart(value = "file", required = false) MultipartFile file) {
-        //TODO implementation
-        return status(CREATED).body(new ImageExtendedDTO());
+    public ResponseEntity<Void> createUserImage(@PathVariable Long userId,
+                                                @Valid ImageDTO imageDTO,
+                                                @RequestPart(value = "file") MultipartFile file) {
+        userImageService.createUserImage(userId, imageDTO, file);
+        return status(CREATED).build();
     }
 
     @GetMapping("/{userId}/medical-images/{imageId}")
-    public ResponseEntity<ImageExtendedDTO> createUserImage(@PathVariable Long userId, @PathVariable Long imageId) {
-        //TODO implementation
-        return ok(new ImageExtendedDTO());
+    public ResponseEntity<UserImageDTO> createUserImage(@PathVariable Long userId, @PathVariable Long imageId) {
+        UserImageDTO userImageDTO = userImageService.getUserImage(userId, imageId);
+        return ok(userImageDTO);
     }
 
 }

@@ -1,13 +1,13 @@
 package com.imageanalysis.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -17,15 +17,17 @@ import static org.springframework.http.ResponseEntity.ok;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
+    private final UserService userService;
+
     @GetMapping("/{userId}")
-    public ResponseEntity<List<UserDTO>> getUser(@PathVariable Long userId) {
-        //TODO implementation
-        return ok(Collections.singletonList(new UserDTO()));
+    public ResponseEntity<UserDTO> getUser(@PathVariable Long userId) {
+        UserDTO user = userService.getUser(userId);
+        return ok(user);
     }
 
     @GetMapping
-    public ResponseEntity<List<UserBasicDTO>> getAllUsers() {
-        //TODO implementation
-        return ok(Collections.singletonList(new UserBasicDTO()));
+    public ResponseEntity<List<UserBasicDTO>> getAllUsers(Pageable pageable) {
+        List<UserBasicDTO> userBasicDTOs = userService.getUsers(pageable);
+        return ok(userBasicDTOs);
     }
 }

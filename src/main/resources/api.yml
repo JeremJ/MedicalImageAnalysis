@@ -45,6 +45,17 @@ paths:
         - Users
       summary: Return Users
       operationId: getUsers
+      parameters:
+        - in: query
+          name: pageable
+          required: false
+          schema:
+            type: object
+            properties:
+              page:
+                type: integer
+              size:
+                type: integer
       responses:
         200:
           description: Basic Data users
@@ -71,6 +82,16 @@ paths:
           required: true
           schema:
             type: integer
+        - in: query
+          name: pageable
+          required: false
+          schema:
+            type: object
+            properties:
+              page:
+                type: integer
+              size:
+                type: integer
       responses:
         200:
           description: List of specified user medical images
@@ -79,10 +100,10 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/MedicalImageResponse'
+                  $ref: '#/components/schemas/ExtendedMedicalImageResponse'
               examples:
-                medicalImageResponseExample:
-                  $ref: '#/components/examples/medicalImagesResponseExample'
+                medicalImagesExtendedResponseExample:
+                  $ref: '#/components/examples/medicalImagesExtendedResponseExample'
     post:
       tags:
         - Users
@@ -102,14 +123,7 @@ paths:
               $ref: '#/components/schemas/MedicalImage'
       responses:
         201:
-          description: List of specified user medical images
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MedicalImageResponse'
-              examples:
-                medicalImageResponseExample:
-                  $ref: '#/components/examples/medicalImageResponseExample'
+          description: Create image successfully
   /api/v1/users/{userId}/medical-images/{imageId}:
     get:
       tags:
@@ -143,6 +157,17 @@ paths:
         - Medical Images
       summary: Return medical images
       operationId: getMedicalImages
+      parameters:
+        - in: query
+          name: pageable
+          required: false
+          schema:
+            type: object
+            properties:
+              page:
+                type: integer
+              size:
+                type: integer
       responses:
         200:
           description: List medical images
@@ -151,9 +176,9 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/MedicalImageResponse'
+                  $ref: '#/components/schemas/ExtendedMedicalImageResponse'
               examples:
-                medicalImagesResponseExample:
+                medicalImagesExtendedResponseExample:
                   $ref: '#/components/examples/medicalImagesResponseExample'
 components:
   examples:
@@ -197,14 +222,58 @@ components:
     medicalImageResponseExample:
       value:
         {
-          id: 3,
-          fileName: RTG_01.png,
-          date: '2017-07-21T17:32:28Z',
-          size: 404313,
-          fileExtension: .png,
-          file: 32103123=,
-          diseaseProbability: 0.897979789
+          id: 1,
+          image:
+            {
+              id: 3,
+              fileName: RTG_01.png,
+              date: '2017-07-21T17:32:28Z',
+              size: 404313,
+              fileExtension: .png,
+              file: 32103123=,
+              diseaseProbability: 0.43243242
+            }
         }
+    medicalImagesExtendedResponseExample:
+      value:
+        [
+        {
+          id: 1,
+          image:
+            {
+              id: 3,
+              fileName: RTG_01.png,
+              date: '2017-07-21T17:32:28Z',
+              size: 404313,
+              fileExtension: .png,
+              file: 32103123=,
+              diseaseProbability: 0.43243242
+            }},
+        {
+          id: 2,
+          image:
+            {
+              id: 4,
+              fileName: MRI_01.jpg,
+              date: '2018-07-21T17:32:28Z',
+              size: 252448,
+              fileExtension: .jpg,
+              file: 32103123=,
+              diseaseProbability: 0.96548949849
+            }},
+        {
+          id: 3,
+          image:
+            {
+              id: 5,
+              fileName: CT_01.dicom,
+              date: '2019-07-21T17:32:28Z',
+              size: 9938291,
+              fileExtension: .dicom,
+              file: 32103123=,
+              diseaseProbability: 0.12156456456
+            }}
+        ]
     medicalImagesResponseExample:
       value:
         [
@@ -320,14 +389,12 @@ components:
     MedicalImage:
       type: object
       required:
-        - files
+        - file
       properties:
         files:
-          description: Files to upload
-          type: array
-          items:
-            type: string
-            format: binary
+          description: File to upload
+          type: string
+          format: binary
         description:
           description: Image description
           type: string
@@ -363,6 +430,16 @@ components:
           description: probabilty of disease on image
           type: number
           format: double
+    ExtendedMedicalImageResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: userImage ID
+      allOf:
+        - $ref: '#/components/schemas/MedicalImageResponse'
+        - type: object
   responses:
     UserNotFound:
       description: User Not Found

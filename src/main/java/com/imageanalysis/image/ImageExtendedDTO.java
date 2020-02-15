@@ -16,6 +16,6 @@ public class ImageExtendedDTO {
     private Instant date;
     private Long size;
     private String fileExtension;
-    private String encodedFile;
+    private String file;
     private Double diseaseProbability;
 }

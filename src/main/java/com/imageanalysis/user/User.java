@@ -1,18 +1,24 @@
 package com.imageanalysis.user;
 
+import com.imageanalysis.user.image.UserImage;
 import com.imageanalysis.user.role.Role;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Table(name = "user")
+@Table(name = "user", schema = "public")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class User {
 
     @Id
@@ -29,4 +35,6 @@ public class User {
     private String country;
     private String zipCode;
     private String city;
+    @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
+    private Set<UserImage> images = new HashSet<>();
 }
