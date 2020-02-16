@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Base64.getEncoder;
+import static java.util.Objects.requireNonNull;
 import static org.mapstruct.ReportingPolicy.IGNORE;
-import static org.springframework.util.StringUtils.getFilename;
 import static org.springframework.util.StringUtils.getFilenameExtension;
+import static org.springframework.util.StringUtils.stripFilenameExtension;
 
 @Mapper(unmappedTargetPolicy = IGNORE)
 public interface ImageMapper {
@@ -36,9 +37,9 @@ public interface ImageMapper {
     default Image multipartToImage(MultipartFile multipartFile) {
         try {
             return new Image(multipartFile.getBytes(),
-                    getFilename(multipartFile.getName()),
+                    stripFilenameExtension(requireNonNull(multipartFile.getOriginalFilename())),
                     multipartFile.getSize(),
-                    getFilenameExtension(multipartFile.getName()));
+                    getFilenameExtension(multipartFile.getOriginalFilename()));
         } catch (IOException e) {
             throw new ProcessingFileException("Error encountered when processing File");
         }

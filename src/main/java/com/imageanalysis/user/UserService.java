@@ -4,6 +4,7 @@ import com.imageanalysis.exception.NotFoundException;
 import com.imageanalysis.image.Image;
 import com.imageanalysis.user.image.UserImage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +24,10 @@ public class UserService {
         return userMapper.toUserDTO(user);
     }
 
-    public List<UserBasicDTO> getUsers(Pageable pageable) {
-        List<User> users = userRepository.findAll(pageable).getContent();
-        return userMapper.toUserBasicDTOs(users);
+    public UserBasicPageDTO getUsers(Pageable pageable) {
+        Page<User> usersPage = userRepository.findAll(pageable);
+        List<UserBasicDTO> userBasics = userMapper.toUserBasicDTOs(usersPage.getContent());
+        return new UserBasicPageDTO(usersPage.getTotalPages(), userBasics);
     }
 
     @Transactional

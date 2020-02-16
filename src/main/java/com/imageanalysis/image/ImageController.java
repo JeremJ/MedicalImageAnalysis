@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.status;
 
@@ -20,8 +18,8 @@ public class ImageController {
     private final ImageService imageService;
 
     @GetMapping
-    public ResponseEntity<List<ImageExtendedDTO>> getMedicalImages(Pageable pageable) {
-        List<ImageExtendedDTO> images = imageService.getMedicalImages(pageable);
+    public ResponseEntity<ImagePageDTO> getMedicalImages(Pageable pageable) {
+        ImagePageDTO images = imageService.getMedicalImages(pageable);
         return status(CREATED).body(images);
     }
 

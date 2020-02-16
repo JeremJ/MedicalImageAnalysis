@@ -1,6 +1,7 @@
 package com.imageanalysis.image;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,9 +16,10 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final ImageMapper imageMapper;
 
-    public List<ImageExtendedDTO> getMedicalImages(Pageable pageable) {
-        List<Image> images = imageRepository.findAll(pageable).getContent();
-        return imageMapper.toImageExtendedDTO(images);
+    public ImagePageDTO getMedicalImages(Pageable pageable) {
+        Page<Image> imagesPage = imageRepository.findAll(pageable);
+        List<ImageExtendedDTO> images = imageMapper.toImageExtendedDTO(imagesPage.getContent());
+        return new ImagePageDTO(imagesPage.getTotalPages(), images);
     }
 
     @Transactional

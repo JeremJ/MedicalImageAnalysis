@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.ok;
@@ -22,8 +21,8 @@ public class UserImageController {
     private final UserImageService userImageService;
 
     @GetMapping("/{userId}/medical-images")
-    public ResponseEntity<List<UserImageDTO>> getUserImages(@PathVariable Long userId, Pageable pageable) {
-        List<UserImageDTO> userImages = userImageService.getUserImages(userId, pageable);
+    public ResponseEntity<UserImagePageDTO> getUserImages(@PathVariable Long userId, Pageable pageable) {
+        UserImagePageDTO userImages = userImageService.getUserImages(userId, pageable);
         return ok(userImages);
     }
 

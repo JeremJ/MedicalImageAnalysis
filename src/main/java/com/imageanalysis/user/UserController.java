@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 import static org.springframework.http.ResponseEntity.ok;
 
 @RequiredArgsConstructor
@@ -26,8 +24,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserBasicDTO>> getAllUsers(Pageable pageable) {
-        List<UserBasicDTO> userBasicDTOs = userService.getUsers(pageable);
+    public ResponseEntity<UserBasicPageDTO> getAllUsers(Pageable pageable) {
+        UserBasicPageDTO userBasicDTOs = userService.getUsers(pageable);
         return ok(userBasicDTOs);
     }
 }

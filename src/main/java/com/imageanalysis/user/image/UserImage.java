@@ -5,6 +5,7 @@ import com.imageanalysis.image.Image;
 import com.imageanalysis.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Table(name = "user_image", schema = "public")
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Data
 public class UserImage {
 

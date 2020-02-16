@@ -52,7 +52,7 @@
                 <constraints nullable="true"/>
             </column>
             <column name="file_name" type="varchar(255)">
-                <constraints nullable="false" unique="true"/>
+                <constraints nullable="false"/>
             </column>
             <column name="date" type="TIMESTAMP WITHOUT TIME ZONE">
                 <constraints nullable="true"/>

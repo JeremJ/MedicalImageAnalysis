@@ -5,6 +5,7 @@ import com.imageanalysis.image.ImageDTO;
 import com.imageanalysis.image.ImageService;
 import com.imageanalysis.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +22,10 @@ public class UserImageService {
     private final UserImageMapper userImageMapper;
     private final UserService userService;
 
-    public List<UserImageDTO> getUserImages(Long userId, Pageable pageable) {
-        return userImageMapper
-                .toUserImageDTOs(userImageRepository.findAllByUserId(userId, pageable));
+    public UserImagePageDTO getUserImages(Long userId, Pageable pageable) {
+        Page<UserImage> imagePage = userImageRepository.findAllByUserId(userId, pageable);
+        List<UserImageDTO> images = userImageMapper.toUserImageDTOs(imagePage.getContent());
+        return new UserImagePageDTO(imagePage.getTotalPages(), images);
     }
 
     @Transactional
