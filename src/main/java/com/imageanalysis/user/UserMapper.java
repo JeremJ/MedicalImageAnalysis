@@ -29,7 +29,9 @@ public interface UserMapper {
                     byteArrayToString(user.getAvatar()),
                     user.getFirstName(),
                     user.getLastName(),
-                    user.getEmail()));
+                    user.getEmail(),
+                    user.getCountry(),
+                    user.getCity()));
         });
         return userBasicDTOs;
     }

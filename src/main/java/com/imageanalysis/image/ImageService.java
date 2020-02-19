@@ -1,5 +1,6 @@
 package com.imageanalysis.image;
 
+import com.imageanalysis.image.predict.PredictService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ public class ImageService {
 
     private final ImageRepository imageRepository;
     private final ImageMapper imageMapper;
+    private final PredictService predictService;
 
     public ImagePageDTO getMedicalImages(Pageable pageable) {
         Page<Image> imagesPage = imageRepository.findAll(pageable);
@@ -25,6 +27,8 @@ public class ImageService {
     @Transactional
     public Image createMedicalImage(MultipartFile multipartFile) {
         Image image = imageMapper.multipartToImage(multipartFile);
+        Double prediction = predictService.predict(multipartFile);
+        image.setDiseaseProbability(prediction);
         return imageRepository.save(image);
     }
 }

@@ -15,4 +15,6 @@ public class UserBasicDTO {
     private String firstName;
     private String lastName;
     private String email;
+    private String country;
+    private String city;
 }

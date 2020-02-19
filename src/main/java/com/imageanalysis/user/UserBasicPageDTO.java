@@ -10,6 +10,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserBasicPageDTO {
-    private Integer totalPages;
+    private Long totalElements;
     private List<UserBasicDTO> users;
 }

@@ -27,7 +27,7 @@ public class UserService {
     public UserBasicPageDTO getUsers(Pageable pageable) {
         Page<User> usersPage = userRepository.findAll(pageable);
         List<UserBasicDTO> userBasics = userMapper.toUserBasicDTOs(usersPage.getContent());
-        return new UserBasicPageDTO(usersPage.getTotalPages(), userBasics);
+        return new UserBasicPageDTO(usersPage.getTotalElements(), userBasics);
     }
 
     @Transactional
