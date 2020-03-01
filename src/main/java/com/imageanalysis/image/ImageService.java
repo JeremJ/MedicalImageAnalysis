@@ -27,7 +27,7 @@ public class ImageService {
     @Transactional
     public Image createMedicalImage(MultipartFile multipartFile) {
         Image image = imageMapper.multipartToImage(multipartFile);
-        Double prediction = predictService.predict(multipartFile);
+        Double prediction = predictService.invokePredictionApi(multipartFile);
         image.setDiseaseProbability(prediction);
         return imageRepository.save(image);
     }
