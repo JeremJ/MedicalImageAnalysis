@@ -1,7 +1,6 @@
 package com.imageanalysis.user;
 
 import com.imageanalysis.user.image.UserImage;
-import com.imageanalysis.user.role.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Table(name = "user", schema = "public")
@@ -27,8 +25,6 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String username;
-    @Enumerated(STRING)
-    private Role role;
     private byte[] avatar;
     private String firstName;
     private String lastName;
@@ -39,4 +35,11 @@ public class User {
     private String city;
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private Set<UserImage> images = new HashSet<>();
+
+    public User(String username, String firstName, String lastName, String email) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 }

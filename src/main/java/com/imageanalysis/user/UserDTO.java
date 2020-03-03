@@ -1,6 +1,5 @@
 package com.imageanalysis.user;
 
-import com.imageanalysis.user.role.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +11,6 @@ public class UserDTO {
 
     private Long id;
     private String username;
-    private Role role;
     private String avatar;
     private String firstName;
     private String lastName;

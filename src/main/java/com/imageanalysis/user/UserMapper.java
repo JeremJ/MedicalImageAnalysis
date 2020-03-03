@@ -1,5 +1,6 @@
 package com.imageanalysis.user;
 
+import org.keycloak.representations.AccessToken;
 import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
@@ -34,5 +35,12 @@ public interface UserMapper {
                     user.getCity()));
         });
         return userBasicDTOs;
+    }
+
+    default User accessTokenToUser(AccessToken accessToken) {
+        return new User(accessToken.getPreferredUsername(),
+                accessToken.getGivenName(),
+                accessToken.getFamilyName(),
+                accessToken.getEmail());
     }
 }
