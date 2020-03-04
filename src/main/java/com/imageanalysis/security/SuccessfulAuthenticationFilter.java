@@ -3,7 +3,7 @@ package com.imageanalysis.security;
 import com.imageanalysis.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -22,8 +22,9 @@ public class SuccessfulAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        Authentication authentication = getContext().getAuthentication();
-        if (authentication.isAuthenticated()) {
+        var authentication = getContext().getAuthentication();
+        var authorities = authentication.getAuthorities();
+        if (authentication.isAuthenticated() && !authorities.contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
             userService.createUserIfNotExists(authentication);
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
