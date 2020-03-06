@@ -25,7 +25,7 @@ public class User {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String username;
-    private byte[] avatar;
+    private String avatar;
     private String firstName;
     private String lastName;
     private String email;

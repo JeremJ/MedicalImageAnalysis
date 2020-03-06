@@ -23,6 +23,12 @@ public class UserController {
         return ok(user);
     }
 
+    @GetMapping("/current")
+    public ResponseEntity<UserDTO> getCurrentUser() {
+        UserDTO user = userService.getCurrentUser();
+        return ok(user);
+    }
+
     @GetMapping
     public ResponseEntity<UserBasicPageDTO> getAllUsers(Pageable pageable) {
         UserBasicPageDTO userBasicDTOs = userService.getUsers(pageable);

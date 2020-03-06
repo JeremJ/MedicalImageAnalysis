@@ -25,9 +25,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 
 @EnableWebSecurity
@@ -72,7 +76,15 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterAfter(handleSuccessfulLogin(), AnonymousAuthenticationFilter.class)
-                .authorizeRequests();
+                .authorizeRequests()
+                .anyRequest().authenticated()
+                .and().cors()
+                .and().exceptionHandling()
+                .defaultAuthenticationEntryPointFor(handleAuthorizationFailure(), new AntPathRequestMatcher("/api/**"));
+    }
+
+    private AuthenticationEntryPoint handleAuthorizationFailure() {
+        return (req, rsp, e) -> rsp.sendError(SC_UNAUTHORIZED);
     }
 
     @Bean

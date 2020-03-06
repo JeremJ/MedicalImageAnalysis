@@ -85,4 +85,7 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="2" author="jjaworski">
+        <modifyDataType columnName="avatar" newDataType="text" tableName="user"/>
+    </changeSet>
 </databaseChangeLog>

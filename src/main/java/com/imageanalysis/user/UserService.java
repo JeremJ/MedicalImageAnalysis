@@ -51,12 +51,12 @@ public class UserService {
     }
 
     @Transactional
-    public String getCurrentUser() {
+    public UserDTO getCurrentUser() {
         Authentication authentication = getContext().getAuthentication();
         AccessToken currentUserToken = ((SimpleKeycloakAccount) authentication.getDetails()).getKeycloakSecurityContext().getToken();
-        currentUserToken.getGivenName();
-        currentUserToken.getFamilyName();
-        return authentication.getName();
+        User currentUser = userRepository.findByUsername(currentUserToken.getPreferredUsername())
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        return userMapper.toUserDTO(currentUser);
     }
 
     @Transactional
