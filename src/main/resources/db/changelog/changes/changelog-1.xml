@@ -88,4 +88,9 @@
     <changeSet id="2" author="jjaworski">
         <modifyDataType columnName="avatar" newDataType="text" tableName="user"/>
     </changeSet>
+    <changeSet id="3" author="jjaworski">
+        <addColumn tableName="user">
+            <column name="keycloak_id" type="text"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

@@ -10,7 +10,9 @@ keycloak:
   cors: true
   credentials:
     secret: 681aa2b8-1df9-44d9-8729-b43949de6546
+  enable-basic-auth: true
   bearer-only: true
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
@@ -30,4 +32,3 @@ logging:
     org:
       springframework:
         security: DEBUG
-

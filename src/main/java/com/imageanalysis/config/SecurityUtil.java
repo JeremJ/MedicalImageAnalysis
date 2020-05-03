@@ -1,4 +1,4 @@
-package com.imageanalysis.security;
+package com.imageanalysis.config;
 
 import lombok.experimental.UtilityClass;
 import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;

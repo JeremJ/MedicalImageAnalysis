@@ -1,8 +1,9 @@
 package com.imageanalysis.user;
 
+import com.imageanalysis.config.SecurityUtil;
 import com.imageanalysis.exception.NotFoundException;
 import com.imageanalysis.image.Image;
-import com.imageanalysis.security.SecurityUtil;
+import com.imageanalysis.keycloak.KeycloakService;
 import com.imageanalysis.user.image.UserImage;
 import com.imageanalysis.user.role.Role;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +30,21 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    private final KeycloakService keycloakService;
 
+    @Transactional
     public UserDTO getUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found"));
         return userMapper.toUserDTO(user);
     }
 
+    private User findUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+    }
+
+    @Transactional
     public UserBasicPageDTO getUsers(Pageable pageable) {
         Page<User> usersPage = userRepository.findAll(pageable);
         List<UserBasicDTO> userBasics = userMapper.toUserBasicDTOs(usersPage.getContent());
@@ -67,6 +76,14 @@ public class UserService {
             createCurrentUser(accessToken);
         }
         return isUserExists;
+    }
+
+    @Transactional
+    public void updateUser(Long userId, UserUpdateDTO userUpdateDTO) {
+        var currentUser = findUser(userId);
+        var updatedUser = userMapper.updateUser(userUpdateDTO, currentUser);
+        keycloakService.updateKeycloakUser(updatedUser);
+        userRepository.saveAndFlush(updatedUser);
     }
 
     private boolean existsByUsername(AccessToken accessToken) {

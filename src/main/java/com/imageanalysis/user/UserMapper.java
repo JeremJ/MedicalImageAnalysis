@@ -2,6 +2,7 @@ package com.imageanalysis.user;
 
 import org.keycloak.representations.AccessToken;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,8 @@ import static org.mapstruct.ReportingPolicy.IGNORE;
 public interface UserMapper {
 
     UserDTO toUserDTO(User user);
+
+    User updateUser(UserUpdateDTO userUpdateDTO, @MappingTarget User user);
 
     default List<UserBasicDTO> toUserBasicDTOs(List<User> users) {
         List<UserBasicDTO> userBasicDTOs = new ArrayList<>();
@@ -33,6 +36,7 @@ public interface UserMapper {
         return new User(accessToken.getPreferredUsername(),
                 accessToken.getGivenName(),
                 accessToken.getFamilyName(),
-                accessToken.getEmail());
+                accessToken.getEmail(),
+                accessToken.getSubject());
     }
 }

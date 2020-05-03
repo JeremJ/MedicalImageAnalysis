@@ -1,4 +1,4 @@
-package com.imageanalysis.security;
+package com.imageanalysis.keycloak;
 
 import com.imageanalysis.user.UserService;
 import lombok.RequiredArgsConstructor;

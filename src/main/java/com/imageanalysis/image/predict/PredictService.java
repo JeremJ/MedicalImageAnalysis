@@ -12,15 +12,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-import static java.util.Base64.*;
-import static java.util.Objects.*;
+import static java.util.Base64.getEncoder;
+import static java.util.Objects.requireNonNull;
 
 @Service
 public class PredictService {
 
     static final String PREDICTION_API = "http://localhost:8000/predict";
 
-    public Double invokePredictionApi(MultipartFile multipartFile) {
+    public Double createPrediction(MultipartFile multipartFile) {
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         RestTemplate restTemplate = new RestTemplate();
         try {
@@ -29,7 +29,7 @@ public class PredictService {
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(
                     map, headers);
-            ProbabilityResponse response = restTemplate.postForObject(PREDICTION_API, requestEntity, ProbabilityResponse.class);
+            Probability response = restTemplate.postForObject(PREDICTION_API, requestEntity, Probability.class);
             return requireNonNull(response).getProbabilityHealthy();
         } catch (ProcessingFileException | IOException e) {
             throw new ProcessingFileException("cannot fetch prediction");

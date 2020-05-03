@@ -33,13 +33,15 @@ public class User {
     private String country;
     private String zipCode;
     private String city;
+    private String keycloakId;
     @OneToMany(mappedBy = "user", cascade = ALL, orphanRemoval = true)
     private Set<UserImage> images = new HashSet<>();
 
-    public User(String username, String firstName, String lastName, String email) {
+    public User(String username, String firstName, String lastName, String email, String keycloakId) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.keycloakId = keycloakId;
     }
 }

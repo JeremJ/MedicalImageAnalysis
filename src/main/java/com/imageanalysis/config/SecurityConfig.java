@@ -1,6 +1,7 @@
-package com.imageanalysis.security;
+package com.imageanalysis.config;
 
 
+import com.imageanalysis.keycloak.SuccessfulAuthenticationFilter;
 import com.imageanalysis.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
@@ -79,7 +80,8 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and().cors()
-                .and().exceptionHandling()
+                .and().csrf().disable()
+                .exceptionHandling()
                 .defaultAuthenticationEntryPointFor(handleAuthorizationFailure(), new AntPathRequestMatcher("/api/**"));
     }
 
