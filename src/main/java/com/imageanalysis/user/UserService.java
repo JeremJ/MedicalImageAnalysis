@@ -14,8 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,19 +32,11 @@ public class UserService {
 
     private final KeycloakService keycloakService;
 
-    @Transactional
     public UserDTO getUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+        User user = findUser(userId);
         return userMapper.toUserDTO(user);
     }
 
-    private User findUser(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("User not found"));
-    }
-
-    @Transactional
     public UserBasicPageDTO getUsers(Pageable pageable) {
         Page<User> usersPage = userRepository.findAll(pageable);
         List<UserBasicDTO> userBasics = userMapper.toUserBasicDTOs(usersPage.getContent());
@@ -53,8 +45,7 @@ public class UserService {
 
     @Transactional
     public User addUserImage(Long userId, Image image, String description) {
-        User user = userRepository
-                .findById(userId).orElseThrow(() -> new NotFoundException("User not found"));
+        User user = findUser(userId);
         user.getImages().add(new UserImage(user, image, description));
         return userRepository.save(user);
     }
@@ -84,6 +75,11 @@ public class UserService {
         var updatedUser = userMapper.updateUser(userUpdateDTO, currentUser);
         keycloakService.updateKeycloakUser(updatedUser);
         userRepository.saveAndFlush(updatedUser);
+    }
+
+    private User findUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     private boolean existsByUsername(AccessToken accessToken) {

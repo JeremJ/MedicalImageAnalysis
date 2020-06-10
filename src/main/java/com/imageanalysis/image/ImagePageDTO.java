@@ -11,5 +11,5 @@ import java.util.List;
 @AllArgsConstructor
 public class ImagePageDTO {
     private Integer totalPages;
-    private List<ImageExtendedDTO> images;
+    private List<ExtendedImageDTO> images;
 }

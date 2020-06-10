@@ -1,10 +1,7 @@
 package com.imageanalysis.user;
 
 import com.imageanalysis.user.image.UserImage;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,6 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(of = "id")
+@Builder(toBuilder = true)
 public class User {
 
     @Id

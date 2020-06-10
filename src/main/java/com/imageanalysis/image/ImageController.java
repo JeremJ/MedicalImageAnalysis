@@ -4,10 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
 
@@ -22,6 +21,12 @@ public class ImageController {
     public ResponseEntity<ImagePageDTO> getMedicalImages(Pageable pageable, Authentication authentication) {
         ImagePageDTO images = imageService.getMedicalImages(pageable);
         return ok().body(images);
+    }
+
+    @DeleteMapping("/{imageId}")
+    public ResponseEntity<Void> deleteMedicalImage(@PathVariable Long imageId) {
+        imageService.deleteMedicalImage(imageId);
+        return noContent().build();
     }
 
 }

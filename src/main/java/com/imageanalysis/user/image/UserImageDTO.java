@@ -1,6 +1,6 @@
 package com.imageanalysis.user.image;
 
-import com.imageanalysis.image.ImageExtendedDTO;
+import com.imageanalysis.image.ExtendedImageDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserImageDTO {
     private Long id;
-    private ImageExtendedDTO image;
+    private ExtendedImageDTO image;
 }

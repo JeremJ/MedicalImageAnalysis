@@ -18,17 +18,15 @@ public interface UserMapper {
 
     default List<UserBasicDTO> toUserBasicDTOs(List<User> users) {
         List<UserBasicDTO> userBasicDTOs = new ArrayList<>();
-        users.forEach(user -> {
-            userBasicDTOs.add(new UserBasicDTO(
-                    user.getId(),
-                    user.getUsername(),
-                    user.getAvatar(),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getEmail(),
-                    user.getCountry(),
-                    user.getCity()));
-        });
+        users.forEach(user -> userBasicDTOs.add(new UserBasicDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getAvatar(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getCountry(),
+                user.getCity())));
         return userBasicDTOs;
     }
 

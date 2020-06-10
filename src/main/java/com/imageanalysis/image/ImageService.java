@@ -1,13 +1,14 @@
 package com.imageanalysis.image;
 
 import com.imageanalysis.image.predict.PredictService;
+import com.imageanalysis.statistic.ImageCount;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class ImageService {
 
     public ImagePageDTO getMedicalImages(Pageable pageable) {
         Page<Image> imagesPage = imageRepository.findAll(pageable);
-        List<ImageExtendedDTO> images = imageMapper.toImageExtendedDTO(imagesPage.getContent());
+        List<ExtendedImageDTO> images = imageMapper.toImageExtendedDTO(imagesPage.getContent());
         return new ImagePageDTO(imagesPage.getTotalPages(), images);
     }
 
@@ -30,5 +31,14 @@ public class ImageService {
         Double prediction = predictService.createPrediction(multipartFile);
         image.setDiseaseProbability(prediction);
         return imageRepository.save(image);
+    }
+
+    @Transactional
+    public void deleteMedicalImage(Long imageId) {
+        imageRepository.deleteById(imageId);
+    }
+
+    public List<ImageCount> countImagesByDay() {
+        return imageRepository.countImagesByDay();
     }
 }

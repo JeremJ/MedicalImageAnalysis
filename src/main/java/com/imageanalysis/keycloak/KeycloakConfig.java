@@ -29,7 +29,9 @@ public class KeycloakConfig {
         return KeycloakBuilder.builder()
                 .serverUrl(authServerUrl)
                 .realm(realm)
-                .grantType(OAuth2Constants.CLIENT_CREDENTIALS)
+                .grantType(OAuth2Constants.PASSWORD)
+                .username("technicaluser")
+                .password("technicaluser")
                 .clientId(resource).clientSecret(credentials.getSecret())
                 .resteasyClient(new ResteasyClientBuilder().connectionPoolSize(10).build()).build();
     }

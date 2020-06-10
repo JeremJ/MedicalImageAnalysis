@@ -17,21 +17,19 @@ import static org.springframework.util.StringUtils.stripFilenameExtension;
 @Mapper(unmappedTargetPolicy = IGNORE)
 public interface ImageMapper {
 
-    default List<ImageExtendedDTO> toImageExtendedDTO(List<Image> images) {
-        List<ImageExtendedDTO> imageExtendedDTOs = new ArrayList<>();
+    default List<ExtendedImageDTO> toImageExtendedDTO(List<Image> images) {
+        List<ExtendedImageDTO> extendedImageDTOS = new ArrayList<>();
 
-        images.forEach(image -> {
-            imageExtendedDTOs.add(new ImageExtendedDTO(
-                    image.getId(),
-                    image.getFileName(),
-                    image.getDate(),
-                    image.getSize(),
-                    image.getFileExtension(),
-                    byteArrayToString(image.getFile()),
-                    image.getDiseaseProbability()
-            ));
-        });
-        return imageExtendedDTOs;
+        images.forEach(image -> extendedImageDTOS.add(new ExtendedImageDTO(
+                image.getId(),
+                image.getFileName(),
+                image.getDate(),
+                image.getSize(),
+                image.getFileExtension(),
+                byteArrayToString(image.getFile()),
+                image.getDiseaseProbability()
+        )));
+        return extendedImageDTOS;
     }
 
     default Image multipartToImage(MultipartFile multipartFile) {

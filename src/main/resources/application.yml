@@ -3,13 +3,13 @@ server:
 keycloak:
   enabled: true
   realm: MedicalAnalysis
-  auth-server-url: http://localhost:8080/auth
+  auth-server-url: http://localhost:8019/auth
   ssl-required: none
   resource: MedicalAnalysis
   principal-attribute: username
   cors: true
   credentials:
-    secret: 681aa2b8-1df9-44d9-8729-b43949de6546
+    secret: 4ea8f459-d454-42f9-8db6-68b5b4d24e7c
   enable-basic-auth: true
   bearer-only: true
 
